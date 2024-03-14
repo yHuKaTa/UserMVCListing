@@ -44,10 +44,10 @@ Method 3:
 * <a href=http://localhost:8080/home> Home page </a>
 
 ### User Form Page - Page that provide user add form. Here we can insert data to the form and save that user to DB. Also, we can proceed back to the home page. 
-* <a href=http://localhost:8080/home> Home page </a>
+* <a href=http://localhost:8080/userForm> User Form Page </a>
 
 ### Logout Page - build-in page from Spring Security. Here we confirm our logout and getting proceed to the login page.
-* <a href=http://localhost:8080/home> Home page </a>
+* <a href=http://localhost:8080/logout> Logout Page </a>
 
 ## Technologies
 
