@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User List</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <script th:inline="javascript">
+        function deleteUser() {
+            var userId = prompt("Enter user ID to delete:");
+            if (userId != null) {
+                if (/^\d+$/.test(userId)) {
+                    if (confirm('Are you sure you want to delete user with ID ' + userId + '?')) {
+                        fetch('/deleteUser/' + userId, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                                window.location.href = /*[[ @{/home} ]]*/;
+                        });
+                    }
+                } else {
+                    alert("Please enter a valid user ID (numeric value only).");
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="container">
+        <h1 sec:authorize="hasAuthority('ROLE_ADMIN')" align="center">User List - Admin View</h1>
+        <h1 sec:authorize="hasAuthority('ROLE_USER')" align="center">User List - User View</h1>
+    </div>
+    <div class="container">
+        <table class="table" border="1">
+            <thead>
+            <tr scope="row">
+                <th scope="col" sec:authorize="hasAuthority('ROLE_ADMIN')">ID</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col" sec:authorize="hasAuthority('ROLE_ADMIN')">Username</th>
+                <th scope="col" sec:authorize="hasAuthority('ROLE_ADMIN')">Role</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr scope="row" th:each="user : ${userList}">
+                <td th:text="${user.id}" sec:authorize="hasAuthority('ROLE_ADMIN')"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.username}" sec:authorize="hasAuthority('ROLE_ADMIN')"></td>
+                <td th:text="${user.role}" sec:authorize="hasAuthority('ROLE_ADMIN')"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+            <span>
+                <a th:href="@{/userForm}" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <button class="btn btn-primary" type="button">Add User</button>
+                </a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')">
+                <button class="btn btn-primary" type="button"
+                        th:onclick="deleteUser(/*[[${user.id}]]*/)">Delete User</button>
+            </a>
+                   <a th:href="@{/logout}"><button class="btn btn-primary" type="button">Logout</button></a>
+        </span>
+    </div>
+</div>
+</body>
+</html>

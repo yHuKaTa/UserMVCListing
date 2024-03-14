@@ -1,0 +1,53 @@
+version: '2.4'
+#TODO: WAITING SCRIPT FOR DOCKER COMPOSE
+#Docker compose can't execute depens_on: db - for building first db container and starting it after that to build api container and start
+services:
+  dimitar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dimitar-dimitar
+    container_name: dimitar
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/employee?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL_GENERATE=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW-SQL=true
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - web
+      - dimitar-network
+    links:
+      - db
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-mysql
+    image: dimitar-db
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_DATABASE: employee
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - dimitar-network
+networks:
+  web:
+    name: web
+  dimitar-network:
+    name: dimitar-network
+    internal: true
+
+volumes:
+  db:
+    name: db

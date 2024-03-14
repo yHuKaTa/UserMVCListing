@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User List</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+</head>
+<body>
+<th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
+    <div class="container">
+        <h1 align="center">Add User</h1>
+    </div>
+    <div align="center">
+        <form id="addUserForm" action="/addUser" method="post" th:object="${addUserForm}">
+            <div class="container">
+                <div>
+                    <div class="container">
+                        <div class="container">
+                        <span>
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" name="firstName" th:field="*{firstName}"
+                                   placeholder="First Name">
+                        </span>
+                        </div>
+                        <div class="container">
+                            <label th:each="error : ${errors}" th:text="${error.defaultMessage}" class="text-danger"></label>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="container">
+                        <span>
+                            <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" th:field="*{lastName}" placeholder="Last Name">
+                        </span>
+                        </div>
+                        <div class="container">
+                            <label th:each="error : ${errors}" th:text="${error.defaultMessage}" class="text-danger"></label>
+                        </div>
+                    </div>
+                    </span>
+                </div>
+                <div class="container">
+                <span>
+                    <div class="container">
+                        <div class="container">
+                        <span>
+                            <label for="username">Username(email):</label>
+                            <input type="username" id="username" name="username" th:field="*{username}"
+                                   placeholder="Email">
+                        </span>
+                        </div>
+                        <div>
+                        <label th:each="error : ${errors}" th:text="${error.defaultMessage}" class="text-danger"></label>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="container">
+                        <span>
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" th:field="*{password}"
+                                   placeholder="Password">
+                        </span>
+                        </div>
+                        <div>
+                    <label th:each="error : ${errors}" th:text="${error.defaultMessage}" class="text-danger"></label>
+                        </div>
+                    </div>
+                </span>
+                </div>
+                <div class="container">
+                    <div class="container">
+                    <span>
+                        <label for="role">Role:</label>
+                    <select id="role" name="role" th:field="*{role}">
+                        <option value="ROLE_USER">USER</option>
+                        <option value="ROLE_ADMIN">ADMIN</option>
+                    </select>
+                    </span>
+                    </div>
+                    <div>
+                        <label th:each="error : ${errors}" th:text="${error.defaultMessage}" class="text-danger"></label>
+                    </div>
+                </div>
+                <span>
+                    <button class="btn btn-primary" type="submit">Add user</button>
+                    <a th:href="@{/home}">
+                        <button class="btn btn-primary" type="button">Cancel</button>
+                    </a>
+                </span>
+                </span>
+            </div>
+        </form>
+    </div>
+</th:block>
+</body>
+</html>
